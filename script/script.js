@@ -11,67 +11,70 @@ const start = document.getElementById('start');
 const repeat = document.getElementById('repeat');
 const title = document.getElementById('title');
 const timer = document.getElementById('timer');
-const min = document.getElementById('min').textContent;
-const sec = document.getElementById('sec').textContent;
+const time = document.querySelectorAll('.time');
+const sec = document.getElementById('sec');
+const min = document.getElementById('min');
 
-let studySec;
-let breakSec;
+let sMin;
+let sSec;
+let sTime;
+
+let bMin;
+let bSec;
+let bTime;
+
 let sessions;
-
-console.log(studySec);
-console.log(breakSec);
-console.log(sessions);
-
-
-let breakTime = 0;
-let studyTime = 0;
-
+let times = 0;
 
 let paused = true;
 let intervalId;
 
-
-
-function convertToSecond(min){
+function convertToSecond(min, sec){
     const m = parseInt(min);
-    return m * 60;
+    const s = parseInt(sec)
+    return (m * 60) + s;
 }
 
 function startStudy(){
     isStudy = true;
     title.textContent = 'Study';
-    studyTime = studySec;
     clearInterval(intervalId);
     intervalId = setInterval(upTime, 1000);
 }
 
 function upTime(){
-    studyTime--;
-    const seconds = studyTime;
-    const minutes = 0;
+    sTime--;
+    const seconds = sTime % 60;
+    const minutes = Math.floor(sTime/ 60);
     timer.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    if(studyTime <= 0){
+    if(sTime <= 0){
         clearInterval(intervalId);
-        startBreak();
+        sTime = convertToSecond(sMin, sSec);
+        times++;
+        console.log('times: ' + times);
+        console.log('sessions: ' + sessions);
+        if(times < sessions){
+            startBreak();
+        }
     }
 }
 
 function startBreak(){
     isStudy = false;
     title.textContent = 'Break';
-    breakTime = breakSec;
     clearInterval(intervalId);
     intervalId = setInterval(upBreak, 1000)
 
 }
 
 function upBreak(){
-    breakTime--;
-    const seconds = breakTime;
-    const minutes = 0;
+    bTime--;
+    const seconds = bTime;
+    const minutes = Math.floor(seconds / 60);
     timer.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    if(breakTime <= 0){
+    if(bTime <= 0){
         clearInterval(intervalId);
+        bTime = convertToSecond(bMin, bSec);
         startStudy();
     }
 }
@@ -79,12 +82,36 @@ function upBreak(){
 configBtn.addEventListener('click', (evento) => {
     evento.preventDefault();
     if(!configStatus){
+        configBtn.src = "./img/openNut.png";
         config.style = "display: flex";
         configStatus = true;
     } else {
-        config.style = "display: none"
+        configBtn.src = "./img/nut.png";
+        config.style = "display: none";
         configStatus = false;
     }
+})
+
+time.forEach((input) => {
+    input.addEventListener('change', (evento) => {
+        evento.preventDefault();
+
+        if(input.id == 'sSec'){
+            if(input.value == ""){
+                sec.textContent = "00";
+            } else {
+                sec.textContent = String(input.value).padStart(2, 0);
+            }
+        }
+
+        if(input.id == 'sMin'){
+            if(input.value == ""){
+                min.textContent = "00";
+            } else{
+                min.textContent = String(input.value).padStart(2, 0);
+            }
+        }
+    })
 })
 
 theme.addEventListener('change', (evento) => {
@@ -110,9 +137,17 @@ theme.addEventListener('change', (evento) => {
 start.addEventListener('click', (evento) => {
     evento.preventDefault();
 
-    studySec = document.getElementById('study').value;
-    breakSec = document.getElementById('break').value;
+    sMin = document.getElementById('sMin').value;
+    sSec = document.getElementById('sSec').value;
+    sTime = convertToSecond(sMin, sSec);
+
+    bMin = document.getElementById('bMin').value;
+    bSec = document.getElementById('bSec').value;
+    bTime = convertToSecond(bMin, bSec);
+
     sessions = document.getElementById('sessions').value;
+    
+
     startStudy();
 })
 
