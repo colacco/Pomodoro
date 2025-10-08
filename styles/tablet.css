@@ -1,25 +1,31 @@
-nav{
-    margin-bottom: 8rem;
-}
-
-#config__button{
-    display: none;
-}
-
 #menu{
     width: 100vw;
     display: flex;
-    justify-content: center;
     gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;  
 }
 
-#config{
-    width: 12rem;
-    display: inline-block;
-    position: relative;
-    top: 0%;
+#head{
+    width: 25.6rem;
+    height: 22.02rem;
+    justify-content: flex-start;
+    gap: 3rem;
+}
+
+#title{
+    font-size: 3rem;
     
-    background-color: rgb(255,255,255, .1);
+}
+
+#timer-session{
+    font-size: 1.5rem;
+}
+
+
+#timer{
+    font-size: 6rem;
+    margin-bottom: 1rem;
 }
 
 #config hr{
@@ -30,16 +36,11 @@ nav{
     margin-bottom: .8rem;
 }
 
-#themes{
-    background-color: rgb(255,255,255, .1);
-}
 
 #buttons{
-    
-    position: absolute;
-    top: 48%;
-    left: 57%;
+    flex-direction: row;
 }
+
 
 #buttons button{
     width: 12rem;
