@@ -1,0 +1,46 @@
+nav{
+    margin-bottom: 8rem;
+}
+
+#config__button{
+    display: none;
+}
+
+#menu{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+#config{
+    width: 12rem;
+    display: inline-block;
+    position: relative;
+    top: 0%;
+    
+    background-color: rgb(255,255,255, .1);
+}
+
+#config hr{
+    margin-bottom: .5rem;
+}
+
+.config-item{
+    margin-bottom: .8rem;
+}
+
+#themes{
+    background-color: rgb(255,255,255, .1);
+}
+
+#buttons{
+    
+    position: absolute;
+    top: 48%;
+    left: 57%;
+}
+
+#buttons button{
+    width: 12rem;
+}

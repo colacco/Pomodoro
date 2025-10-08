@@ -1,33 +1,42 @@
-const root = document.querySelector(':root');
-const rootStyles = getComputedStyle(root);
-
-
-const configBtn = document.getElementById('config__button');
-const config = document.getElementById('config');
-let configStatus = false;
-
-const theme = document.getElementById('themes');
-const start = document.getElementById('start');
-const repeat = document.getElementById('repeat');
 const title = document.getElementById('title');
 const timer = document.getElementById('timer');
-const time = document.querySelectorAll('.time');
-const sec = document.getElementById('sec');
-const min = document.getElementById('min');
+const timerSession = document.getElementById('timer-session');
+const start = document.getElementById('start');
+const restart = document.getElementById('restart');
 
-let sMin;
-let sSec;
-let sTime;
-
-let bMin;
-let bSec;
-let bTime;
-
-let sessions;
+let sMin, sSec, sTime, bMin, bSec, bTime, sessions;
 let times = 0;
+let study = true;
+let paused, firstStart = true;
+let intervalId = null;
 
-let paused = true;
-let intervalId;
+function btn(status){
+    paused = status;
+    if(paused){
+        start.textContent = 'Continue';
+        start.style.backgroundColor = 'var(--content-color)';
+        start.style.color = 'var(--first-gradient-color)';
+        start.style.border = '1px solid var(--content-color)';
+    }else{
+        start.textContent = 'Pause';
+        start.style.backgroundColor = 'var(--pause-color)'
+        start.style.color = 'var(--content-color)'
+        start.style.border = '1px solid var(--pause-color)'
+    }   
+}
+
+function setAtt(){
+    sMin = document.getElementById('sMin').value;
+    sSec = document.getElementById('sSec').value;
+    bMin = document.getElementById('bMin').value;
+    bSec = document.getElementById('bSec').value;
+    sessions = document.getElementById('sessions').value;
+    sTime = convertToSecond(sMin, sSec);
+    bTime = convertToSecond(bMin, bSec);
+
+    times = 0;
+    timerSession.textContent = `Sessão atual: ${times}`;
+}
 
 function convertToSecond(min, sec){
     const m = parseInt(min);
@@ -36,7 +45,7 @@ function convertToSecond(min, sec){
 }
 
 function startStudy(){
-    isStudy = true;
+    study = true;
     title.textContent = 'Study';
     clearInterval(intervalId);
     intervalId = setInterval(upTime, 1000);
@@ -44,23 +53,30 @@ function startStudy(){
 
 function upTime(){
     sTime--;
-    const seconds = sTime % 60;
-    const minutes = Math.floor(sTime/ 60);
+    const seconds = sTime;
+    const minutes = Math.floor(seconds/ 60);
     timer.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     if(sTime <= 0){
         clearInterval(intervalId);
         sTime = convertToSecond(sMin, sSec);
         times++;
-        console.log('times: ' + times);
-        console.log('sessions: ' + sessions);
+        timerSession.textContent = `Sessão atual: ${times}`;
         if(times < sessions){
             startBreak();
+        } else {
+            paused = true; 
+            firstStart = true;
+            timerSession.textContent = `Sessão atual: 0`; 
+            start.textContent = 'Start';
+            start.style.backgroundColor = 'var(--content-color)'
+            start.style.color = 'var(--first-gradient-color)'
+            start.style.border = '1px solid var(--content-color)'
         }
     }
 }
 
 function startBreak(){
-    isStudy = false;
+    study = false;
     title.textContent = 'Break';
     clearInterval(intervalId);
     intervalId = setInterval(upBreak, 1000)
@@ -79,77 +95,37 @@ function upBreak(){
     }
 }
 
-configBtn.addEventListener('click', (evento) => {
-    evento.preventDefault();
-    if(!configStatus){
-        configBtn.src = "./img/openNut.png";
-        config.style = "display: flex";
-        configStatus = true;
-    } else {
-        configBtn.src = "./img/nut.png";
-        config.style = "display: none";
-        configStatus = false;
-    }
-})
-
-time.forEach((input) => {
-    input.addEventListener('change', (evento) => {
-        evento.preventDefault();
-
-        if(input.id == 'sSec'){
-            if(input.value == ""){
-                sec.textContent = "00";
-            } else {
-                sec.textContent = String(input.value).padStart(2, 0);
-            }
-        }
-
-        if(input.id == 'sMin'){
-            if(input.value == ""){
-                min.textContent = "00";
-            } else{
-                min.textContent = String(input.value).padStart(2, 0);
-            }
-        }
-    })
-})
-
-theme.addEventListener('change', (evento) => {
-    evento.preventDefault();
-    switch (theme.value) {
-        case 'blue':
-            document.documentElement.style.setProperty('--first-gradient-color', '#91a0f2');
-            document.documentElement.style.setProperty('--second-gradient-color', '#A7BAF2');
-            document.documentElement.style.setProperty('--third-gradient-color', '#F2D5D5');
-            document.documentElement.style.setProperty('--content-color', '#fff');
-            break;
-        case 'red':
-            document.documentElement.style.setProperty('--first-gradient-color', '#8C031C');
-            document.documentElement.style.setProperty('--second-gradient-color', '#8C030E');
-            document.documentElement.style.setProperty('--third-gradient-color', '#260104');
-            document.documentElement.style.setProperty('--content-color', '#fff');
-            break;
-        default:
-            break;
-    }
-})
-
 start.addEventListener('click', (evento) => {
     evento.preventDefault();
 
-    sMin = document.getElementById('sMin').value;
-    sSec = document.getElementById('sSec').value;
-    sTime = convertToSecond(sMin, sSec);
+    if(firstStart){ // START
+        firstStart = false;
+        btn(false);
+        setAtt();
+        startStudy();
+    } else if(!paused){  // PAUSE
+        btn(true);
 
-    bMin = document.getElementById('bMin').value;
-    bSec = document.getElementById('bSec').value;
-    bTime = convertToSecond(bMin, bSec);
+        clearInterval(intervalId);
+        intervalId = null;
+    } else{ // CONTINUE
+        btn(false);
 
-    sessions = document.getElementById('sessions').value;
-    
-
-    startStudy();
+        if(study){
+            intervalId = setInterval(upTime,1000);
+        } else {
+            intervalId = setInterval(upBreak, 1000);
+        }  
+    }
 })
 
-
-
+restart.addEventListener('click', (evento) => {
+    evento.preventDefault();
+    if(!firstStart){
+        if(paused){
+            btn(false);
+        }
+        setAtt();
+        startStudy();
+    }
+})

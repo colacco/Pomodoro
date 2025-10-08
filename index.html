@@ -7,57 +7,64 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/tablet.css" media="screen and (min-width: 650px)">
     <title>Pomodoro</title>
 </head>
 <body>
     <nav>
         <img src="./img/nut.png" id="config__button" alt="">
     </nav>
-    <div id="head"> 
-        <h1 id="title">Study</h1>
-        <div id="timer">
-            <p id="min">00</p>
-            <p id="div">:</p>
-            <p id="sec">00</p>
+    <div id="menu">
+        <div id="head"> 
+            <h1 id="title">Study</h1>
+            <div id="timer">
+                <p id="min">00</p>
+                <p id="div">:</p>
+                <p id="sec">00</p>
+            </div>
+            <p id="timer-session">Sessão atual: 0</p>
         </div>
+
+        <ul id="config">
+            <h2>Settings</h2>
+            <hr>
+
+            <li class="config-item">
+                <label for="study">Study:</label>
+                <input type="text" name="study" id="sMin" class="time" placeholder="mm">
+                <p>:</p>
+                <input type="text" name="study" id="sSec" class="time" placeholder="ss">
+            </li>
+
+            <li class="config-item">
+                <label for="break">Break: </label>
+                <input type="text" name="break" id="bMin" class="time" placeholder="mm">
+                <p>:</p>
+                <input type="text" name="break" id="bSec" class="time" placeholder="ss">
+            </li>
+
+            <li class="config-item">
+                <label for="sessions">Sessions: </label>
+                <input type="text" name="sessions" id="sessions" placeholder="session">
+            </li>
+
+            <li class="config-item">
+                <label for="themes">Themes: </label>
+                <select name="themes" id="themes">
+                    <option value="green">Green</option>
+                    <option value="blue">Blue</option>
+                    <option value="red">Red</option>
+                </select>
+            </li>
+        </ul>
     </div>
-
-    <ul id="config">
-        <h2>Settings</h2>
-
-        <li class="config-item">
-            <label for="study">Study:</label>
-            <input type="text" name="study" id="sMin" class="time" placeholder="mm">
-            <p>:</p>
-            <input type="text" name="study" id="sSec" class="time" placeholder="ss">
-        </li>
-
-        <li class="config-item">
-            <label for="break">Break: </label>
-            <input type="text" name="break" id="bMin" class="time" placeholder="mm">
-            <p>:</p>
-            <input type="text" name="break" id="bSec" class="time" placeholder="ss">
-        </li>
-
-        <li class="config-item">
-            <label for="sessions">Sessions: </label>
-            <input type="text" name="sessions" id="sessions" placeholder="session">
-        </li>
-
-        <li class="config-item">
-            <label for="themes">Themes: </label>
-            <select name="themes" id="themes">
-                <option value="blue">Blue</option>
-                <option value="red">Red</option>
-            </select>
-        </li>
-    </ul>
 
     <div id="buttons">
         <button class="button" id="start">Start</button>
-        <button class="button" id="repeat">Repeat</button>
+        <button class="button" id="restart">Restart</button>
     </div>
 </body>
 
+<script src="script/config.js"></script>
 <script src="script/script.js"></script>
 </html>

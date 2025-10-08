@@ -1,9 +1,10 @@
 :root{
     --main-font: 'Montserrat', sans-serif;
-    --first-gradient-color: #91a0f2;
-    --second-gradient-color: #A7BAF2;
-    --third-gradient-color: #F2D5D5;
-    --content-color: #fff;
+    --first-gradient-color: #71A63C;
+    --second-gradient-color: #96BF78;
+    --third-gradient-color: #B4D930;
+    --content-color: #F2F2F2;
+    --pause-color: #593E34;
 }
 
 
@@ -20,12 +21,12 @@ html{
 }
 
 body{
-
+    height: 100vh;
+    height: 100dvh;
     background-image: linear-gradient(125deg, var(--first-gradient-color), var(--second-gradient-color), var(--third-gradient-color));
     background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     font-size: 1rem;
     position: relative;
@@ -47,9 +48,10 @@ nav{
     
 }
 
+
 #head{
-    width: 83vw;
-    height: 33vh;
+    width: 15.56rem;
+    height: 13.39rem;
     border: 1px solid var(--content-color);
     border-radius: 50%;
     display:flex;
@@ -60,10 +62,6 @@ nav{
     text-align: center;
     margin-bottom: 2rem;
 }
-
-
-
-
 
 #title{
     font-weight: 300;
@@ -78,46 +76,61 @@ nav{
     color: var(--content-color);
 }
 
+#timer-session{
+    color: var(--content-color);
+}
+
 #config{
-    width: 80vw;
-    height: 50vh;
+    width: 15rem;
+    height: auto;
     display: none;
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
-    border: 1px solid var(--content-color);
+    border: 1px solid;
     border-radius: 10px;
-    background-color: var(--third-gradient-color);
+    background-color: var(--content-color);
     list-style-type: none;
-    color: var(--content-color);
     position: absolute;
     top: 13%;
 }
 
 #config h2{
     text-align: center;
+    
+}
+
+#config hr{
     margin-bottom: 3rem;
 }
 
 .config-item{
     display: flex;
-    gap: .3rem;
+    align-items: baseline;
+    gap: .5rem;
     font-weight: 600;
     
 }
 
 .config-item input{
     background-color: transparent;
-    width: 1.1rem;
+    width: 1.7rem;
     border: none;
+}
+
+.config-item input[type="text"]{
+    font-size: 1rem;
 }
 
 #sessions, #themes{
     width: 80%;
 }
 
-.config-item input::placeholder{
-    color: var(--content-color);
+#themes{
+    background-color: var(--content-color);
+    border: 1px solid;
+    border-radius: 1rem;
+    padding: .3rem 2rem;
 }
 
 #buttons{
@@ -128,7 +141,7 @@ nav{
 }
 
 .button{
-    width: 85vw;
+    width: 15.93rem;
     height: 1.8rem;
     border: 1px solid var(--content-color);
     border-radius:8px;
@@ -140,7 +153,7 @@ nav{
     background-color: var(--content-color);
 }
 
-#repeat{
+#restart{
     color: var(--content-color);
     font-weight: 600;
     background-color: transparent;
